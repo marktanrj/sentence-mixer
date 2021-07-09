@@ -1,12 +1,14 @@
 # Sentence Mixer Bot
 
+Inspired by [Warcraft 3 Build a Sentence map](https://www.epicwar.com/maps/88906/), this bot mixes words and sentences given by you and your friends.
+
 ### Stack
 
 - **Logic**: TypeScript, Nodejs, Telegraf framework
 - **Database**: Firebase Realtime Database
 - **Host**: AWS Lambda, Serverless framework
 
-### Set up
+## Serverless Bot Set Up
 
 #### Database
 
@@ -15,10 +17,12 @@
 
 #### Telegram Bot
 
-1. Create bot with `@Botfather`
-1. Create `.env.development`,`.env.production` files
+1. Create bot with `@Botfather` and get token
 
-- store bot token and firebase realtime db url (see `.env.template`)
+#### App Config
+
+1. Create `.env.development`,`.env.production` files
+2. Write bot token and firebase realtime db url (see `.env.template`)
 
 #### Install dependencies
 
