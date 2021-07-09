@@ -127,7 +127,7 @@ export const isCurrentStage = async (roomId: string, stage: string) => {
 };
 
 export const processText = (text: string): string => {
-  let output = text.toUpperCase();
+  let output = text.toLowerCase();
   output = output.replace(/<+|>+$/g, "");
   output = output.trim();
   return output;
