@@ -39,8 +39,8 @@ async function createRoom(ctx: ContextExtended) {
 
     roomId = await getUniqueInviteId();
     await createGameRoom(roomId, userId, ctx);
-    await bot.telegram.sendMessage(ctx.chat!.id, roomCreatedView(roomId));
-    await bot.telegram.sendMessage(ctx.chat!.id, roomCreatedSendInviteView(roomId));
+    bot.telegram.sendMessage(ctx.chat!.id, roomCreatedView(roomId));
+    bot.telegram.sendMessage(ctx.chat!.id, roomCreatedSendInviteView(roomId));
     await sendStatusOfRoom(roomId);
     return;
   } catch (err) {
@@ -81,12 +81,12 @@ async function joinRoom(ctx: ContextExtended) {
       return;
     }
     await addPlayerToRoom(roomId, userId, ctx);
-    await notifyAllPlayers({
+    notifyAllPlayers({
       message: `${ctx.from?.first_name} (@${ctx.from?.username}) has joined the game`,
       roomId,
       excludedPlayers: [userId],
     });
-    await bot.telegram.sendMessage(ctx.chat!.id, `Joined Room ${roomId}`);
+    bot.telegram.sendMessage(ctx.chat!.id, `Joined Room ${roomId}`);
     await sendStatusOfRoom(roomId);
     return;
   } catch (err) {
@@ -105,12 +105,12 @@ async function leaveRoom(ctx: ContextExtended) {
 
     await removePlayerFromRoom(roomId, userId);
 
-    await notifyAllPlayers({
+    notifyAllPlayers({
       message: `${ctx.from?.first_name} (@${ctx.from?.username}) has left the game`,
       roomId,
       excludedPlayers: [userId],
     });
-    await bot.telegram.sendMessage(ctx.chat!.id, `Left Room`);
+    bot.telegram.sendMessage(ctx.chat!.id, `Left Room`);
     await sendStatusOfRoom(roomId);
     return;
   } catch (err) {

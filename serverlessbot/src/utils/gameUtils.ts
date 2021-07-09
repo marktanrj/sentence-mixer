@@ -56,7 +56,7 @@ export const setPlayerInputAtStage = async ({
   const snapshot = await playersRef.child(userId).once("value");
   const data = snapshot.val();
   if (data[stage]) {
-    bot.telegram.sendMessage(ctx!.chat!.id, "You already replied");
+    bot.telegram.sendMessage(ctx.chat!.id, "You already replied");
     throw new Error("Player already replied");
   } else {
     await Promise.all([

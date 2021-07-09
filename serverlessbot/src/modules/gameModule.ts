@@ -27,8 +27,8 @@ export const stageHandler = (stage: string, nextStage: string) => {
     const { userId, roomId, userInput } = ctx.sentenceMixer;
     try {
       await setPlayerInputAtStage({ userId, roomId, userInput, stage, ctx });
-      ctx.reply(`Received input for ${stage}`);
-      await notifyAllPlayers({
+      bot.telegram.sendMessage(ctx.chat!.id, `Received input for ${stage}`);
+      notifyAllPlayers({
         message: `${ctx.from?.first_name} (${ctx.from?.username}) has answered`,
         roomId,
         excludedPlayers: [userId],
