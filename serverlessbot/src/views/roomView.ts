@@ -5,16 +5,18 @@ Forward the following message for others to join!
 
 export const roomCreatedSendInviteView = (roomId: string) => `
 Go to @sentencemixerbot and type:
-/join ${roomId}
+/${roomId}
 `;
 
-export const currentPlayersInRoomView = (players: Object): string => {
+export const currentPlayersInRoomView = (players: Object, roomId: string): string => {
   let reply = `
-Current players in room:`;
+Current players in room ${roomId}:`;
 
   Object.values(players).forEach((player) => {
     reply += `\n- ${player.firstName} (${player.username})`;
   });
+
+  reply += `\n\nOthers join with /${roomId}`;
 
   return reply;
 };

@@ -13,7 +13,7 @@ import {
 } from "../utils/roomUtils";
 import { notifyAllPlayers } from "../utils/gameUtils";
 import { startGame } from "./gameModule";
-import { requireJoinedRoom, requireUserInput } from "../middlewares";
+import { requireJoinedRoom, requireUserInput, requireUserInputJoinRoom } from "../middlewares";
 import { ContextExtended } from "../types";
 import { bot } from "..";
 import { roomCreatedSendInviteView, roomCreatedView } from "../views/roomView";
@@ -25,6 +25,7 @@ export const roomModule = () => {
   bot.command("/leave", requireJoinedRoom(), leaveRoom);
   bot.command("/launch", requireJoinedRoom(), launchGame);
   bot.command("/status", requireJoinedRoom(), statusRoom);
+  bot.use(requireUserInputJoinRoom(), joinRoom);
 };
 
 async function createRoom(ctx: ContextExtended) {
@@ -61,18 +62,18 @@ async function deleteRoom(ctx: ContextExtended) {
     bot.telegram.sendMessage(ctx.chat!.id, "Your room was deleted");
     return;
   } catch (err) {
-    console.log(err.message);
+    console.log(err);
     return;
   }
 }
 
 async function joinRoom(ctx: ContextExtended) {
-  const { userId, userInput } = ctx.sentenceMixer;
-  const roomId = userInput;
+  const { joinRoomCode, userId, userInput } = ctx.sentenceMixer;
+  const roomId = joinRoomCode === "" ? userInput : joinRoomCode;
 
   try {
     if (!(await isRoomExists(roomId))) {
-      bot.telegram.sendMessage(ctx.chat!.id, `Room does not exists`);
+      bot.telegram.sendMessage(ctx.chat!.id, /^\d+$/.test(roomId) ? `Room does not exists` : `Incorrect command`);
       return;
     }
     if (await isPlayerInRoom(userId)) {
@@ -123,14 +124,14 @@ async function launchGame(ctx: ContextExtended) {
 
   try {
     if (!(await isPlayerOwnerOfRoom(userId, roomId))) {
-      bot.telegram.sendMessage(ctx!.chat!.id, "You are not the owner of the room");
+      bot.telegram.sendMessage(ctx.chat!.id, "You are not the owner of the room");
       return;
     }
     await launchGameRoom(roomId);
     await notifyAllPlayers({ message: "Game has started", roomId });
     await startGame(ctx);
   } catch (err) {
-    console.log(err.message);
+    console.log(err);
     return;
   }
 }

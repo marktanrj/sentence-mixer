@@ -6,5 +6,6 @@ export interface ContextExtended extends Context {
     roomId: string;
     userInput: string;
     userCommand: string;
+    joinRoomCode: string;
   };
 }

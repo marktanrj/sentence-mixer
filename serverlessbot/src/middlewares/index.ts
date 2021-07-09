@@ -11,6 +11,7 @@ export const initMiddlewares = async (ctx: ContextExtended, next: any): Promise<
     roomId: "",
     userInput: "",
     userCommand: "",
+    joinRoomCode: "",
   };
   return next();
 };
@@ -49,6 +50,32 @@ export const requireUserInput = (errorMessageReply = "Incorrect input need at le
       ...ctx.sentenceMixer,
       userInput,
       userCommand,
+    };
+
+    return next();
+  };
+};
+
+export const requireUserInputJoinRoom = () => {
+  return async (ctx: ContextExtended, next: any): Promise<void> => {
+    const input = String(_.get(ctx, "message.text"));
+    const inputArr = input.split(" ");
+    if (inputArr.length !== 1) {
+      bot.telegram.sendMessage(ctx.chat!.id, "Join with /<id>\neg. /1234");
+      return;
+    }
+    let joinRoomCode = inputArr[0];
+
+    if (joinRoomCode.length === 1) {
+      bot.telegram.sendMessage(ctx.chat!.id, "Join with /<id>\neg. /1234");
+      return;
+    }
+
+    joinRoomCode = joinRoomCode.slice(1);
+
+    ctx.sentenceMixer = {
+      ...ctx.sentenceMixer,
+      joinRoomCode,
     };
 
     return next();
