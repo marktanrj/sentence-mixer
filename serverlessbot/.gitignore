@@ -1,0 +1,6 @@
+/node_modules
+.env.production
+.env.development
+.serverless
+/build
+/config/sentencemixer-local-dev.js
