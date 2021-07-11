@@ -39,8 +39,8 @@ async function createRoom(ctx: ContextExtended) {
 
     roomId = await getUniqueInviteId();
     await createGameRoom(roomId, userId, ctx);
-    bot.telegram.sendMessage(ctx.chat!.id, roomCreatedView(roomId));
-    bot.telegram.sendMessage(ctx.chat!.id, roomCreatedSendInviteView(roomId, bot.botInfo.username));
+    await bot.telegram.sendMessage(ctx.chat!.id, roomCreatedView(roomId));
+    await bot.telegram.sendMessage(ctx.chat!.id, roomCreatedSendInviteView(roomId, bot.botInfo.username));
     await sendStatusOfRoom(roomId);
     return;
   } catch (err) {
