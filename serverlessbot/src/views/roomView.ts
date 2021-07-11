@@ -3,12 +3,12 @@ You have created a game with ID ${roomId}
 Forward the following message for others to join!
 `;
 
-export const roomCreatedSendInviteView = (roomId: string) => `
-Go to @sentencemixerbot and type:
-/${roomId}
+export const roomCreatedSendInviteView = (roomId: string, botUsername: string) => `
+Join the sentence mixer game:
+https://t.me/${botUsername}?start=${roomId}
 `;
 
-export const currentPlayersInRoomView = (players: Object, roomId: string): string => {
+export const currentPlayersInRoomView = (players: Object, roomId: string, botUsername: string): string => {
   let reply = `
 Current players in room ${roomId}:`;
 
@@ -16,7 +16,7 @@ Current players in room ${roomId}:`;
     reply += `\n- ${player.firstName} (${player.username})`;
   });
 
-  reply += `\n\nOthers join with /${roomId}`;
+  reply += `\n\nOthers join with:\nhttps://t.me/${botUsername}?start=${roomId}`;
 
   return reply;
 };

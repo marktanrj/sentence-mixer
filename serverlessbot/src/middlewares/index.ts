@@ -33,6 +33,24 @@ export const requireJoinedRoom = () => {
   };
 };
 
+export const checkStartInput = () => {
+  return async (ctx: ContextExtended, next: any): Promise<void> => {
+    const input = String(_.get(ctx, "message.text"));
+    const inputArr = input.split(" ");
+    if (inputArr.length > 1) {
+      const userCommand = inputArr[0];
+      inputArr.shift();
+      const userInput = inputArr.join(" ");
+      ctx.sentenceMixer = {
+        ...ctx.sentenceMixer,
+        userInput,
+        userCommand,
+      };
+    }
+    return next();
+  };
+};
+
 export const requireUserInput = (errorMessageReply = "Incorrect input need at least 2 arguments") => {
   return async (ctx: ContextExtended, next: any): Promise<void> => {
     const input = String(_.get(ctx, "message.text"));
@@ -72,6 +90,10 @@ export const requireUserInputJoinRoom = () => {
     }
 
     joinRoomCode = joinRoomCode.slice(1);
+
+    if (!/^\d+$/.test(joinRoomCode)) {
+      return;
+    }
 
     ctx.sentenceMixer = {
       ...ctx.sentenceMixer,

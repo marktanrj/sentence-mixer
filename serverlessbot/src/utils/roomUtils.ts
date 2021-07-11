@@ -1,3 +1,4 @@
+import { bot } from "..";
 import { db } from "../firebase";
 import { ContextExtended } from "../types";
 import { currentPlayersInRoomView } from "../views/roomView";
@@ -138,7 +139,7 @@ export const addPlayerToRoom = async (roomId: string, userId: string, ctx: Conte
 
 export const sendStatusOfRoom = async (roomId: string) => {
   await notifyAllPlayers({
-    message: currentPlayersInRoomView(await getPlayersInRoom(roomId), roomId),
+    message: currentPlayersInRoomView(await getPlayersInRoom(roomId), roomId, bot.botInfo.username),
     roomId,
   });
 };
